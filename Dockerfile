@@ -5,7 +5,9 @@ RUN adduser -D -u ${PUID} ldap
 WORKDIR /home/ldap
 
 RUN apk add --no-cache postgresql-libs && \
+    apk add --no-cache mariadb-connector-c-dev && \
     apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev
+
 COPY requirements.txt .
 RUN python -m venv venv && \
     venv/bin/pip install --no-cache-dir gunicorn && \
@@ -15,6 +17,7 @@ RUN python -m venv venv && \
 FROM python:3.10-alpine
 
 RUN apk add --no-cache postgresql-libs
+Run apk add --no-cache mariadb-connector-c-dev
 
 ARG PUID=1000
 RUN adduser -D -u ${PUID} ldap
